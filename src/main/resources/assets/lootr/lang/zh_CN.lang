@@ -1,0 +1,17 @@
+lootr.commands.usage=/lootr <chest|cart|clear|openers|custom>
+lootr.message.decayed=此战利品容器已失效。
+lootr.message.decay_in=此战利品容器将在 %s 秒后失效。
+lootr.message.decay_start=此战利品容器将在 %s 秒后开始失效。
+lootr.message.refreshed=此战利品容器已重新生成战利品。
+lootr.message.refresh_in=此战利品容器将在 %s 秒后重新生成战利品。
+lootr.message.refresh_start=此战利品容器将在 %s 秒后开始重新生成战利品。
+lootr.message.should_sneak=你必须潜行才能破坏此战利品容器。
+lootr.message.should_sneak2=%s
+lootr.message.should_sneak3=[按住 Shift]
+lootr.message.cannot_break=你无法破坏此战利品容器。
+lootr.message.cannot_break_sneak=你必须在创造模式下潜行才能破坏此战利品容器。
+lootr.message.cart_should_sneak=你必须潜行才能破坏此战利品矿车。
+lootr.message.cart_should_sneak3=[按住 Shift]
+lootr.commands.create=已在 %s 创建一个 %s，其使用的战利品表为 %s
+lootr.commands.summon=已在 %s 召唤一个战利品矿车，其使用的战利品表为 %s
+lootr.commands.blockpos=%s, %s, %s
