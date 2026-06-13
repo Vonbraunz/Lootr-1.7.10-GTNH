@@ -1,0 +1,17 @@
+lootr.commands.usage=/lootr <chest|cart|clear|openers|custom>
+lootr.message.decayed=This loot container has decayed.
+lootr.message.decay_in=This container will decay in %s seconds.
+lootr.message.decay_start=This container will start decaying in %s seconds.
+lootr.message.refreshed=This loot container has had its loot refreshed.
+lootr.message.refresh_in=The contents of this container will refresh in %s seconds.
+lootr.message.refresh_start=The contents of this container will begin refreshing in %s seconds.
+lootr.message.should_sneak=You must sneak to break this container.
+lootr.message.should_sneak2=%s
+lootr.message.should_sneak3=[Hold Shift]
+lootr.message.cannot_break=You cannot break this block.
+lootr.message.cannot_break_sneak=You must sneak in creative to break this block.
+lootr.message.cart_should_sneak=You must sneak to break this cart.
+lootr.message.cart_should_sneak3=[Hold Shift]
+lootr.commands.create=Created a %s at %s with the loot table %s
+lootr.commands.summon=Summoned a Lootr minecart at %s with the loot table %s
+lootr.commands.blockpos=%s, %s, %s
