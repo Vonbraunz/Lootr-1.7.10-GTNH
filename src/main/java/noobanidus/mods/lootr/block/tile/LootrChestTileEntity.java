@@ -97,7 +97,6 @@ public class LootrChestTileEntity extends TileEntityChest implements ILootTile {
 
     @Override
     public void updateEntity() {
-        super.updateEntity();
         ++this.ticksSinceSync;
         this.specialNumPlayersUsingChest = calculatePlayersUsingSync(this.worldObj, this, this.ticksSinceSync, this.xCoord, this.yCoord, this.zCoord, this.specialNumPlayersUsingChest);
 

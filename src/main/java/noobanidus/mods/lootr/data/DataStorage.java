@@ -14,13 +14,18 @@ import noobanidus.mods.lootr.entity.LootrChestMinecartEntity;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class DataStorage {
     public static final String DECAY = "lootr/Lootr-DecayData";
     public static final String REFRESH = "lootr/Lootr-RefreshData";
+
+    private static final java.util.Set<UUID> knownChestIds = java.util.Collections.synchronizedSet(new java.util.LinkedHashSet<>());
+
+    private static void ensureChestDataDir(WorldServer world) {
+        File dir = new File(world.getSaveHandler().getWorldDirectory(), "data/lootr");
+        dir.mkdirs();
+    }
 
     private static <T extends WorldSavedData> T computeIfAbsentManager(MapStorage manager, T template, String key) {
         @SuppressWarnings("unchecked")
@@ -94,16 +99,22 @@ public class DataStorage {
 
     // Chest data
     public static ChestData getInstanceUuid(WorldServer world, UUID id, int x, int y, int z) {
+        ensureChestDataDir(world);
+        knownChestIds.add(id);
         String key = ChestData.ID(id);
         return computeIfAbsentManager(getWorldServer().mapStorage, new ChestData(world.provider.dimensionId, id, null), key);
     }
 
     public static ChestData getInstance(WorldServer world, UUID id) {
+        ensureChestDataDir(world);
+        knownChestIds.add(id);
         String key = ChestData.ID(id);
         return computeIfAbsentManager(getWorldServer().mapStorage, new ChestData(id), key);
     }
 
     public static ChestData getInstanceInventory(WorldServer world, UUID id, ItemStack[] base) {
+        ensureChestDataDir(world);
+        knownChestIds.add(id);
         String key = ChestData.ID(id);
         return computeIfAbsentManager(getWorldServer().mapStorage, new ChestData(world.provider.dimensionId, id, base), key);
     }
@@ -116,7 +127,11 @@ public class DataStorage {
         if (inventory == null) {
             inventory = data.createInventory(player, filler, tile);
         }
-        if (inventory != null) inventory.setBlockPos(x, y, z);
+        if (inventory != null) {
+            inventory.setBlockPos(x, y, z);
+            if (tile instanceof noobanidus.mods.lootr.block.tile.LootrChestTileEntity)
+                inventory.setTileRef((noobanidus.mods.lootr.block.tile.LootrChestTileEntity) tile);
+        }
         return inventory;
     }
 
@@ -128,7 +143,11 @@ public class DataStorage {
         if (inventory == null) {
             inventory = data.createInventory(player, data.customInventory(), tile);
         }
-        if (inventory != null) inventory.setBlockPos(x, y, z);
+        if (inventory != null) {
+            inventory.setBlockPos(x, y, z);
+            if (tile instanceof noobanidus.mods.lootr.block.tile.LootrChestTileEntity)
+                inventory.setTileRef((noobanidus.mods.lootr.block.tile.LootrChestTileEntity) tile);
+        }
         return inventory;
     }
 
@@ -144,7 +163,6 @@ public class DataStorage {
         return inventory;
     }
 
-    @Nullable
     public static void refreshInventory(World world, UUID uuid, EntityPlayerMP player, int x, int y, int z) {
         if (world.isRemote || !(world instanceof WorldServer)) return;
         ChestData data = getInstanceUuid((WorldServer) world, uuid, x, y, z);
@@ -152,7 +170,6 @@ public class DataStorage {
         data.markDirty();
     }
 
-    @Nullable
     public static void refreshInventory(World world, LootrChestMinecartEntity cart, EntityPlayerMP player, int x, int y, int z) {
         if (world.isRemote || !(world instanceof WorldServer)) return;
         ChestData data = getInstance((WorldServer) world, cart.getUniqueID());
@@ -162,28 +179,41 @@ public class DataStorage {
 
     public static boolean clearInventories(UUID uuid) {
         WorldServer world = getWorldServer();
-        MapStorage data = world.mapStorage;
-        File dataPath = new File(world.getSaveHandler().getWorldDirectory(), "data/lootr");
-        if (!dataPath.exists()) return false;
+        MapStorage storage = world.mapStorage;
 
-        List<String> ids = new ArrayList<>();
-        for (File f : dataPath.listFiles()) {
-            if (f.isFile() && f.getName().endsWith(".dat")) {
-                String name = f.getName().replace(".dat", "");
-                if (name.startsWith("Lootr-")) continue;
-                ids.add("lootr/" + name.charAt(0) + "/" + name.substring(0, 2) + "/" + name);
+        // Build full set of known IDs: in-memory registry + any .dat files on disk
+        java.util.Set<String> keys = new java.util.LinkedHashSet<>();
+        for (UUID id : knownChestIds) {
+            keys.add(ChestData.ID(id));
+        }
+
+        storage.saveAllData();
+
+        File dataPath = new File(world.getSaveHandler().getWorldDirectory(), "data/lootr");
+        Lootr.LOG.info("[Lootr] Scanning: " + dataPath.getAbsolutePath() + " exists=" + dataPath.exists());
+        if (dataPath.exists()) {
+            File[] files = dataPath.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.isFile() && f.getName().endsWith(".dat") && !f.getName().startsWith("Lootr-")) {
+                        keys.add("lootr/" + f.getName().replace(".dat", ""));
+                    }
+                }
             }
         }
 
+        Lootr.LOG.info("[Lootr] Found " + keys.size() + " chest data entries");
+
         int cleared = 0;
-        for (String id : ids) {
-            ChestData chestData = (ChestData) data.loadData(ChestData.class, id);
+        for (String key : keys) {
+            ChestData chestData = (ChestData) storage.loadData(ChestData.class, key);
             if (chestData != null && chestData.clearInventory(uuid)) {
                 cleared++;
                 chestData.markDirty();
             }
         }
-        Lootr.LOG.info("Cleared " + cleared + " inventories for player UUID " + uuid);
+        storage.saveAllData();
+        Lootr.LOG.info("[Lootr] Cleared " + cleared + " inventories for player UUID " + uuid);
         return cleared != 0;
     }
 }

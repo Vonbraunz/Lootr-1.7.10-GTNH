@@ -1,6 +1,5 @@
 package noobanidus.mods.lootr.command;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -24,7 +23,7 @@ import noobanidus.mods.lootr.init.ModBlocks;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class LootrCommand implements net.minecraft.command.ICommand {
+public class LootrCommand extends CommandBase {
 
     @Override
     public String getCommandName() {
@@ -38,7 +37,7 @@ public class LootrCommand implements net.minecraft.command.ICommand {
 
     @Override
     public List<String> getCommandAliases() {
-        return ImmutableList.of();
+        return new ArrayList<>();
     }
 
     @Override
@@ -138,19 +137,6 @@ public class LootrCommand implements net.minecraft.command.ICommand {
         }
     }
 
-    private static int parseIntBounded(ICommandSender sender, String arg, int min, int max) {
-        int i = parseInt(sender, arg);
-        return MathHelper.clamp_int(i, min, max);
-    }
-
-    private static int parseInt(ICommandSender sender, String arg) {
-        try {
-            return Integer.parseInt(arg);
-        } catch (NumberFormatException e) {
-            throw new WrongUsageException("lootr.commands.usage");
-        }
-    }
-
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return sender.canCommandSenderUseCommand(2, getCommandName());
@@ -159,9 +145,9 @@ public class LootrCommand implements net.minecraft.command.ICommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("chest", "cart", "clear", "openers", "custom");
+            return new ArrayList<>(Arrays.asList("chest", "cart", "clear", "openers", "custom"));
         }
-        return ImmutableList.of();
+        return new ArrayList<>();
     }
 
     @Override

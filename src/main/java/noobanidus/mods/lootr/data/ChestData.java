@@ -29,8 +29,7 @@ public class ChestData extends WorldSavedData {
     }
 
     public static String ID(UUID id) {
-        String idString = id.toString();
-        return "lootr/" + idString.charAt(0) + "/" + idString.substring(0, 2) + "/" + idString;
+        return "lootr/" + id.toString();
     }
 
     public ChestData(String ID) {
@@ -91,6 +90,9 @@ public class ChestData extends WorldSavedData {
             name = tile.hasCustomInventoryName() ? new ChatComponentText(tile.getInventoryName()) : new ChatComponentText("Chest");
             ItemStack[] items = new ItemStack[tile.getSizeInventory()];
             result = new SpecialChestInventory(this, items, name, tile.xCoord, tile.yCoord, tile.zCoord);
+            if (tile instanceof noobanidus.mods.lootr.block.tile.LootrChestTileEntity) {
+                result.setTileRef((noobanidus.mods.lootr.block.tile.LootrChestTileEntity) tile);
+            }
             filler.fillWithLoot(player, result);
         }
 

@@ -142,14 +142,8 @@ public class LootrChestMinecartEntity extends EntityMinecartContainer implements
     }
 
     @Override
-    public void openInventory() {
-        if (!this.worldObj.isRemote) {
-            net.minecraft.network.play.server.S3FPacketCustomPayload pkt;
-        }
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-        // tracked via LootrChestTileEntity.onPlayerClose pattern
-    }
+    public void closeInventory() {}
 }

@@ -26,8 +26,8 @@ public class LootrCore implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        // Mixins are loaded via the GTNH convention plugin which handles UniMixins.
-        // The mixins JSON config files specify which mixins to load.
+        MixinBootstrap.init();
+        Mixins.addConfiguration("mixins.lootr.json");
     }
 
     @Override

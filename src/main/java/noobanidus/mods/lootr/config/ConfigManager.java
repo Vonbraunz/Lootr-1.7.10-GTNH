@@ -91,7 +91,7 @@ public class ConfigManager {
         REFRESH_LOOT_TABLES = config.getStringList("refresh_loot_tables", Configuration.CATEGORY_GENERAL, new String[0], "Loot tables which refresh");
         REFRESH_DIMENSIONS = config.get("general", "refresh_dimensions", new int[0]).getIntList();
         VANILLA_TEXTURES = config.getBoolean("vanilla_textures", Configuration.CATEGORY_GENERAL, false, "Use vanilla chest textures");
-        CONVERT_WORLDGEN_INVENTORIES = config.getBoolean("convert_worldgen_inventories", Configuration.CATEGORY_GENERAL, false, "Convert chests without loot tables but with items");
+        CONVERT_WORLDGEN_INVENTORIES = config.getBoolean("convert_worldgen_inventories", Configuration.CATEGORY_GENERAL, true, "Convert world-generated chests with items into per-player Lootr inventories");
         BLAST_RESISTANT = config.getBoolean("blast_resistant", Configuration.CATEGORY_GENERAL, false, "Lootr chests resist explosions");
         BLAST_IMMUNE = config.getBoolean("blast_immune", Configuration.CATEGORY_GENERAL, false, "Lootr chests immune to explosions");
         ZERO_COMPARATOR = config.getBoolean("zero_comparator", Configuration.CATEGORY_GENERAL, false, "Output 0 from comparator");

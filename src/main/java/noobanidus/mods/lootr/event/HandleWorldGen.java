@@ -45,8 +45,7 @@ public class HandleWorldGen {
         stopItemSpawning = true;
         try {
             world.setBlock(x, y, z, ModBlocks.INVENTORY, 0, 2);
-            world.removeTileEntity(x, y, z);
-            return chunk.func_150806_e(x, y, z);
+            return world.getTileEntity(x, y, z);
         } catch (RuntimeException e) {
             Lootr.LOG.error("Couldn't replace loot block", e);
             return null;
@@ -72,7 +71,7 @@ public class HandleWorldGen {
                 }
                 if (!newInventory.isEmpty()) {
                     int x = teChest.xCoord, y = teChest.yCoord, z = teChest.zCoord;
-                    int meta = chunk.getBlockMetadata(x, y, z);
+                    int meta = chunk.getBlockMetadata(x & 15, y, z & 15);
                     int facing = meta & 3;
                     teChest.closeInventory();
                     int newMeta = ModBlocks.INVENTORY_OFFSET + facing;

@@ -20,6 +20,8 @@ Lootr makes loot chests per-player. When a player opens a loot chest for the fir
 
 ## Port Status
 
+Confirmed working in GTNH multiplayer on 1.7.10.
+
 | Feature | Status |
 |---------|--------|
 | Per-player loot chests | Done |
@@ -29,11 +31,19 @@ Lootr makes loot chests per-player. When a player opens a loot chest for the fir
 | Decay/refresh timers | Done |
 | Config system | Done |
 | Networking | Done |
-| Custom renderer | Done |
+| Custom renderer (opened/unopened texture) | Done |
+| Chest lid animation | Done |
 | Break protection | Done |
-| World-gen conversion | Done |
+| World-gen chest conversion | Done |
+| Minecart chest conversion | Done |
 | `/lootr` command | Done |
 | Shulker box support | Dropped (not in 1.7.10) |
+
+## Notes
+
+- Loot data is stored per-chest UUID via `WorldSavedData` (MapStorage) in `data/lootr/` inside the world save folder.
+- In 1.7.10 there are no loot tables — world-gen chests already contain items. `convert_worldgen_inventories` is enabled by default to handle this.
+- Uses [UniMixins](https://github.com/LegacyModdingMC/UniMixins) for mixin support, which is included in GTNH.
 
 ## Building
 

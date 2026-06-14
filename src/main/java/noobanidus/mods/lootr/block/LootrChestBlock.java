@@ -107,4 +107,16 @@ public class LootrChestBlock extends BlockChest {
         if (ConfigManager.ZERO_COMPARATOR) return 0;
         return 1;
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        this.blockIcon = reg.registerIcon("lootr:chest");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return this.blockIcon;
+    }
 }

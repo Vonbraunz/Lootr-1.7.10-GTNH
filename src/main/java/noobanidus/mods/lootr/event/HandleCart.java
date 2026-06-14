@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.chunk.Chunk;
@@ -38,6 +39,10 @@ public class HandleCart {
             EntityMinecartChest chest = (EntityMinecartChest) event.entity;
             if (!chest.worldObj.isRemote && ConfigManager.CONVERT_MINESHAFTS) {
                 LootrChestMinecartEntity lootr = new LootrChestMinecartEntity(chest.worldObj, chest.posX, chest.posY, chest.posZ);
+                for (int i = 0; i < chest.getSizeInventory() && i < lootr.getSizeInventory(); i++) {
+                    ItemStack stack = chest.getStackInSlot(i);
+                    if (stack != null) lootr.setInventorySlotContents(i, stack.copy());
+                }
                 int chunkX = MathHelper.floor_double(chest.posX) >> 4;
                 int chunkZ = MathHelper.floor_double(chest.posZ) >> 4;
                 Chunk chunk = chest.worldObj.getChunkFromChunkCoords(chunkX, chunkZ);

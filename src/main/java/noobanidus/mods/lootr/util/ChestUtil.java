@@ -152,6 +152,7 @@ public class ChestUtil {
             SpecialChestInventory provider = DataStorage.getInventory(world, tileId, stacks != null ? stacks.clone() : null, (EntityPlayerMP) player, x, y, z, tile);
             if (provider != null) {
                 ((EntityPlayerMP) player).displayGUIChest(provider);
+                tile.onPlayerClose(player);
             }
             return true;
         }

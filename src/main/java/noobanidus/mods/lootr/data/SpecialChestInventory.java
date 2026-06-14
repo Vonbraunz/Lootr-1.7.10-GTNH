@@ -20,6 +20,7 @@ import java.util.UUID;
 public class SpecialChestInventory extends net.minecraft.inventory.InventoryBasic {
     private final Object chestData;
     private int posX, posY, posZ;
+    private noobanidus.mods.lootr.block.tile.LootrChestTileEntity tileRef;
 
     public SpecialChestInventory(Object chestData, ItemStack[] contents, IChatComponent name, int x, int y, int z) {
         super(name.getUnformattedText(), true, contents.length);
@@ -51,6 +52,20 @@ public class SpecialChestInventory extends net.minecraft.inventory.InventoryBasi
     public int getPosX() { return posX; }
     public int getPosY() { return posY; }
     public int getPosZ() { return posZ; }
+
+    public void setTileRef(noobanidus.mods.lootr.block.tile.LootrChestTileEntity tile) {
+        this.tileRef = tile;
+    }
+
+    @Override
+    public void openInventory() {
+        if (tileRef != null) tileRef.openInventory();
+    }
+
+    @Override
+    public void closeInventory() {
+        if (tileRef != null) tileRef.closeInventory();
+    }
 
     public void setBlockPos(int x, int y, int z) {
         this.posX = x;

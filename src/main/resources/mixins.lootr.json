@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.lootr.refmap.json",
   "mixins": [
-    "MixinSaveHandler"
+    "MixinSaveHandler",
+    "MixinWorld"
   ],
   "client": [
   ],
