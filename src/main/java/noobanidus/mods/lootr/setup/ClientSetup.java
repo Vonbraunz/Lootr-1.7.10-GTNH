@@ -23,12 +23,10 @@ public class ClientSetup extends CommonSetup {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
 
-        // bind tile entity special renderers
         ClientRegistry.bindTileEntitySpecialRenderer(LootrChestTileEntity.class, new SpecialLootChestTileRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(LootrInventoryTileEntity.class, new SpecialLootChestTileRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TrappedLootrChestTileEntity.class, new SpecialLootChestTileRenderer());
 
-        // register entity renderer
         RenderingRegistry.registerEntityRenderingHandler(LootrChestMinecartEntity.class, new LootrMinecartRenderer());
     }
 

@@ -61,7 +61,6 @@ public class LootrChestMinecartEntity extends EntityMinecartContainer implements
 
     @Override
     public boolean isEntityInvulnerable() {
-        // handled in interactFirst
         return false;
     }
     @Override
@@ -80,7 +79,7 @@ public class LootrChestMinecartEntity extends EntityMinecartContainer implements
 
     @Override
     public int getMinecartType() {
-        return 1; // chest
+        return 1;
     }
 
     @Override

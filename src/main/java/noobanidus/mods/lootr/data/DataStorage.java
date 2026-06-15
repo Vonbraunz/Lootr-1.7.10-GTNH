@@ -41,7 +41,6 @@ public class DataStorage {
         return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
     }
 
-    // Decay tracking
     public static int getDecayValue(UUID id) {
         TickingData data = computeIfAbsentManager(getWorldServer().mapStorage, new TickingData(DECAY), DECAY);
         return data.getValue(id);
@@ -69,7 +68,6 @@ public class DataStorage {
         if (data.tick()) data.markDirty();
     }
 
-    // Refresh tracking
     public static int getRefreshValue(UUID id) {
         TickingData data = computeIfAbsentManager(getWorldServer().mapStorage, new TickingData(REFRESH), REFRESH);
         return data.getValue(id);
@@ -97,7 +95,6 @@ public class DataStorage {
         if (data.tick()) data.markDirty();
     }
 
-    // Chest data
     public static ChestData getInstanceUuid(WorldServer world, UUID id, int x, int y, int z) {
         ensureChestDataDir(world);
         knownChestIds.add(id);
@@ -181,7 +178,6 @@ public class DataStorage {
         WorldServer world = getWorldServer();
         MapStorage storage = world.mapStorage;
 
-        // Build full set of known IDs: in-memory registry + any .dat files on disk
         java.util.Set<String> keys = new java.util.LinkedHashSet<>();
         for (UUID id : knownChestIds) {
             keys.add(ChestData.ID(id));
